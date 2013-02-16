@@ -1,24 +1,45 @@
-﻿namespace Nonoe.Tailz.GUI
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Tailz.cs" company="Nonoe">
+//   No copyright
+// </copyright>
+// <summary>
+//   TODO The tailz.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Nonoe.Tailz.GUI
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
     using System.Security;
     using System.Windows.Forms;
+
     using Nonoe.Tailz.Core;
 
+    /// <summary>The main/only form.</summary>
     public partial class Tailz : Form
     {
-        private BindingList<Tail> tails;
+        #region Fields
 
-        private EventLog applicationEventLog;
+        /// <summary>TODO The application event log.</summary>
+        private readonly EventLog applicationEventLog;
 
-        private EventLog securityEventLog;
+        /// <summary>TODO The security event log.</summary>
+        private readonly EventLog securityEventLog;
 
-        private EventLog systemEventLog;
+        /// <summary>TODO The system event log.</summary>
+        private readonly EventLog systemEventLog;
 
+        /// <summary>TODO The tails.</summary>
+        private readonly BindingList<Tail> tails;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>Initializes a new instance of the <see cref="Tailz"/> class.</summary>
         public Tailz()
         {
             this.InitializeComponent();
@@ -28,191 +49,186 @@
             this.grdLogs.Columns.Add("File", "File");
             this.grdLogs.Columns.Add("Message", "Message");
 
-            applicationEventLog = new EventLog { Log = "Application", MachineName = "." };
-            applicationEventLog.EntryWritten += new EntryWrittenEventHandler(this.OnEventLog);
-            securityEventLog = new EventLog { Log = "Security", MachineName = "." };
-            securityEventLog.EntryWritten += new EntryWrittenEventHandler(this.OnEventLog);
-            systemEventLog = new EventLog { Log = "System", MachineName = "." };
-            systemEventLog.EntryWritten += new EntryWrittenEventHandler(this.OnEventLog);
+            this.applicationEventLog = new EventLog { Log = "Application", MachineName = "." };
+            this.applicationEventLog.EntryWritten += this.OnEventLog;
+            this.securityEventLog = new EventLog { Log = "Security", MachineName = "." };
+            this.securityEventLog.EntryWritten += this.OnEventLog;
+            this.systemEventLog = new EventLog { Log = "System", MachineName = "." };
+            this.systemEventLog.EntryWritten += this.OnEventLog;
         }
 
-        private void startTailButton_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Delegates
+
+        /// <summary>TODO The add row.</summary>
+        /// <param name="grid">TODO The grid.</param>
+        /// <param name="fileName">TODO The file name.</param>
+        /// <param name="message">TODO The message.</param>
+        private delegate void addRow(DataGridView grid, string fileName, string message);
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>TODO The on event log.</summary>
+        /// <param name="source">TODO The source.</param>
+        /// <param name="entryWrittenEventArgs">TODO The entry written event args.</param>
+        public void OnEventLog(object source, EntryWrittenEventArgs entryWrittenEventArgs)
         {
-            foreach (var tail in this.tails)
-            {
-                tail.Start();    
-            }
-
-            btnStop.Enabled = true;
-            btnStart.Enabled = false;
-            
-            try
-            {
-                if (this.chkApplicationEventLog.Checked)
-                {
-                    applicationEventLog.EnableRaisingEvents = true;
-                }
-
-                if (this.chkSecurityEventLog.Checked)
-                {
-                    securityEventLog.EnableRaisingEvents = true;
-                }
-
-                if (this.chkSystemEventLog.Checked)
-                {
-                    systemEventLog.EnableRaisingEvents = true;
-                }
-            }
-            catch (SecurityException)
-            {
-                MessageBox.Show("You do not have the correct privileges to run this now.");
-            }
+            this.AddRow(this.grdLogs, entryWrittenEventArgs.Entry.Source, entryWrittenEventArgs.Entry.Message);
         }
 
-        private void stopTailButton_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Methods
+
+        /// <summary>TODO The add row.</summary>
+        /// <param name="grid">TODO The grid.</param>
+        /// <param name="fileName">TODO The file name.</param>
+        /// <param name="message">TODO The message.</param>
+        private void AddRow(DataGridView grid, string fileName, string message)
         {
-            foreach (var tail in tails)
+            if (grid.InvokeRequired)
             {
-                tail.Stop();
+                addRow callbackMethod = this.AddRow;
+                this.Invoke(callbackMethod, this.grdLogs, fileName, message);
             }
-
-            if (this.chkApplicationEventLog.Checked)
+            else
             {
-                applicationEventLog.EnableRaisingEvents = false;
+                foreach (string lineToSet in message.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
+                {
+                    this.grdLogs.Rows.Add(fileName, lineToSet);
+                }
             }
-
-            if (this.chkSecurityEventLog.Checked)
-            {
-                securityEventLog.EnableRaisingEvents = false;
-            }
-
-            if (this.chkSystemEventLog.Checked)
-            {
-                systemEventLog.EnableRaisingEvents = false;
-            }
-
-            btnStart.Enabled = true;
-            btnStop.Enabled = false;
         }
 
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            this.grdLogs.DataSource = null;
-        }
-
+        /// <summary>TODO The browse for tailfile button_ click.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
         private void browseForTailfileButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 this.tailFilenameTextbox.Text = openFileDialog.FileName;
             }
         }
 
-        private void myTail_MoreData(object tailObject, string fileName, string newData)
-        {
-            this.AddRow(grdLogs, fileName, newData);
-        }
-
-        delegate void addRow(DataGridView grid, string fileName, string message);
-        private void AddRow(DataGridView grid, string fileName, string message)
-        {
-            if (grid.InvokeRequired)
-            {
-                addRow callbackMethod = new addRow(this.AddRow);
-                this.Invoke(callbackMethod, this.grdLogs, fileName, message);
-            }
-            else
-            {
-                foreach (string line in message.Split('\n'))
-                {
-                    string lineToSet = line.Replace("\n", string.Empty).Replace("\r", string.Empty);
-                    if (!string.IsNullOrWhiteSpace(lineToSet))
-                    { 
-                        this.grdLogs.Rows.Add(fileName, lineToSet);
-                    }
-                }
-            }
-        }
-
-        delegate void delRemoveText(TextBox ctl, int length);
-        private void RemoveText(TextBox ctl, int length)
-        {
-            if (ctl.InvokeRequired)
-            {
-                delRemoveText callbackMethod = new delRemoveText(this.RemoveText);
-                this.Invoke(callbackMethod, ctl, length);
-            }
-            else
-            {
-                ctl.Text = ctl.Text.Remove(0, length);
-            }
-        }
-
-        delegate void delAppendText(TextBox ctl, string text);
-        private void AppendText(TextBox ctl, string text)
-        {
-            if (ctl.InvokeRequired)
-            {
-                delAppendText callbackMethod = new delAppendText(this.AppendText);
-                this.Invoke(callbackMethod, ctl, text);
-            }
-            else
-            {
-                ctl.AppendText(text);
-            }
-        }
-
+        /// <summary>TODO The btn add watcher_ click.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
         private void btnAddWatcher_Click(object sender, EventArgs e)
         {
             var tail = new Tail(this.tailFilenameTextbox.Text);
             tail.MoreData += this.myTail_MoreData;
             this.tails.Add(tail);
-            this.CheckWhichButtonsShouldBeEnabled();
         }
 
-        public void OnEventLog(object source, EntryWrittenEventArgs entryWrittenEventArgs)
+        /// <summary>TODO The clear button_ click.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
+        private void clearButton_Click(object sender, EventArgs e)
         {
-            this.AddRow(this.grdLogs, entryWrittenEventArgs.Entry.Source, entryWrittenEventArgs.Entry.Message);
+            this.grdLogs.DataSource = null;
         }
 
+        /// <summary>TODO The grd tails_ user deleted row.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
         private void grdTails_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
-            if (!this.tails.Any() && !chkApplicationEventLog.Checked && !chkSecurityEventLog.Checked && !chkSystemEventLog.Checked)
+            if (!this.tails.Any() && !this.chkApplicationEventLog.Checked && !this.chkSecurityEventLog.Checked
+                && !this.chkSystemEventLog.Checked)
             {
                 this.stopTailButton_Click(null, null);
             }
-            CheckWhichButtonsShouldBeEnabled();
         }
 
-        private void chkApplicationEventLog_CheckedChanged(object sender, EventArgs e)
+        /// <summary>TODO The my tail_ more data.</summary>
+        /// <param name="tailObject">TODO The tail object.</param>
+        /// <param name="fileName">TODO The file name.</param>
+        /// <param name="newData">TODO The new data.</param>
+        private void myTail_MoreData(object tailObject, string fileName, string newData)
         {
-            CheckWhichButtonsShouldBeEnabled();
+            this.AddRow(this.grdLogs, fileName, newData);
         }
 
-        private void chkSecurityEventLog_CheckedChanged(object sender, EventArgs e)
+        /// <summary>TODO The start tail button_ click.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
+        private void startTailButton_Click(object sender, EventArgs e)
         {
-            CheckWhichButtonsShouldBeEnabled();
-        }
-
-        private void chkSystemEventLog_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckWhichButtonsShouldBeEnabled();
-        }
-
-        private void CheckWhichButtonsShouldBeEnabled()
-        {
-            if (chkApplicationEventLog.Checked || chkSecurityEventLog.Checked || chkSystemEventLog.Checked
-                || tails.Any())
+            foreach (Tail tail in this.tails)
             {
-                btnStart.Enabled = true;
-                btnStop.Enabled = false;
+                tail.Start();
             }
-            else
+
+            try
             {
-                btnStart.Enabled = false;
-                btnStop.Enabled = true;
+                if (this.chkApplicationEventLog.Checked)
+                {
+                    this.applicationEventLog.EnableRaisingEvents = true;
+                }
+
+                if (this.chkSecurityEventLog.Checked)
+                {
+                    this.securityEventLog.EnableRaisingEvents = true;
+                }
+
+                if (this.chkSystemEventLog.Checked)
+                {
+                    this.systemEventLog.EnableRaisingEvents = true;
+                }
             }
+            catch (SecurityException)
+            {
+                MessageBox.Show("You do not have the correct privileges to run this now.");
+            }
+
+            this.btnStop.Enabled = true;
+            this.btnStart.Enabled = false;
+            this.grdTails.Enabled = false;
+            this.btnAddWatcher.Enabled = false;
+            this.chkApplicationEventLog.Enabled = false;
+            this.chkSecurityEventLog.Enabled = false;
+            this.chkSystemEventLog.Enabled = false;
         }
+
+        /// <summary>TODO The stop tail button_ click.</summary>
+        /// <param name="sender">TODO The sender.</param>
+        /// <param name="e">TODO The e.</param>
+        private void stopTailButton_Click(object sender, EventArgs e)
+        {
+            foreach (Tail tail in this.tails)
+            {
+                tail.Stop();
+            }
+
+            if (this.chkApplicationEventLog.Checked)
+            {
+                this.applicationEventLog.EnableRaisingEvents = false;
+            }
+
+            if (this.chkSecurityEventLog.Checked)
+            {
+                this.securityEventLog.EnableRaisingEvents = false;
+            }
+
+            if (this.chkSystemEventLog.Checked)
+            {
+                this.systemEventLog.EnableRaisingEvents = false;
+            }
+
+            this.btnStart.Enabled = true;
+            this.btnStop.Enabled = false;
+            this.grdTails.Enabled = true;
+            this.btnAddWatcher.Enabled = true;
+            this.chkApplicationEventLog.Enabled = true;
+            this.chkSecurityEventLog.Enabled = true;
+            this.chkSystemEventLog.Enabled = true;
+        }
+
+        #endregion
     }
 }

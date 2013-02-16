@@ -88,7 +88,6 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Enabled = false;
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnStart.Location = new System.Drawing.Point(6, 15);
             this.btnStart.Name = "btnStart";
@@ -152,7 +151,6 @@
             this.chkApplicationEventLog.TabIndex = 23;
             this.chkApplicationEventLog.Text = "Application";
             this.chkApplicationEventLog.UseVisualStyleBackColor = true;
-            this.chkApplicationEventLog.CheckedChanged += new System.EventHandler(this.chkApplicationEventLog_CheckedChanged);
             // 
             // chkSystemEventLog
             // 
@@ -163,7 +161,6 @@
             this.chkSystemEventLog.TabIndex = 24;
             this.chkSystemEventLog.Text = "System";
             this.chkSystemEventLog.UseVisualStyleBackColor = true;
-            this.chkSystemEventLog.CheckedChanged += new System.EventHandler(this.chkSystemEventLog_CheckedChanged);
             // 
             // chkSecurityEventLog
             // 
@@ -174,7 +171,6 @@
             this.chkSecurityEventLog.TabIndex = 25;
             this.chkSecurityEventLog.Text = "Security";
             this.chkSecurityEventLog.UseVisualStyleBackColor = true;
-            this.chkSecurityEventLog.CheckedChanged += new System.EventHandler(this.chkSecurityEventLog_CheckedChanged);
             // 
             // groupBox1
             // 
