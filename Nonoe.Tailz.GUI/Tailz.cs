@@ -3,7 +3,8 @@
 //   No copyright
 // </copyright>
 // <summary>
-//   TODO The tailz.
+//   The main and only form in this application.
+//   It shows which tailz are running on which logs.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,16 +24,16 @@ namespace Nonoe.Tailz.GUI
     {
         #region Fields
 
-        /// <summary>TODO The application event log.</summary>
+        /// <summary>The application event log.</summary>
         private readonly EventLog applicationEventLog;
 
-        /// <summary>TODO The security event log.</summary>
+        /// <summary>The security event log.</summary>
         private readonly EventLog securityEventLog;
 
-        /// <summary>TODO The system event log.</summary>
+        /// <summary>The system event log.</summary>
         private readonly EventLog systemEventLog;
 
-        /// <summary>TODO The tails.</summary>
+        /// <summary>The log tails that are running.</summary>
         private readonly BindingList<Tail> tails;
 
         #endregion
@@ -61,19 +62,19 @@ namespace Nonoe.Tailz.GUI
 
         #region Delegates
 
-        /// <summary>TODO The add row.</summary>
-        /// <param name="grid">TODO The grid.</param>
-        /// <param name="fileName">TODO The file name.</param>
-        /// <param name="message">TODO The message.</param>
+        /// <summary>The add row delegate.</summary>
+        /// <param name="grid">The grid to add the row to.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="message">The message.</param>
         private delegate void addRow(DataGridView grid, string fileName, string message);
 
         #endregion
 
         #region Public Methods and Operators
 
-        /// <summary>TODO The on event log.</summary>
-        /// <param name="source">TODO The source.</param>
-        /// <param name="entryWrittenEventArgs">TODO The entry written event args.</param>
+        /// <summary>The on event log event handler.</summary>
+        /// <param name="source">The source of the event log.</param>
+        /// <param name="entryWrittenEventArgs">The entry written event argument.</param>
         public void OnEventLog(object source, EntryWrittenEventArgs entryWrittenEventArgs)
         {
             this.AddRow(this.grdLogs, entryWrittenEventArgs.Entry.Source, entryWrittenEventArgs.Entry.Message);
@@ -83,10 +84,10 @@ namespace Nonoe.Tailz.GUI
 
         #region Methods
 
-        /// <summary>TODO The add row.</summary>
-        /// <param name="grid">TODO The grid.</param>
-        /// <param name="fileName">TODO The file name.</param>
-        /// <param name="message">TODO The message.</param>
+        /// <summary>The add row method.</summary>
+        /// <param name="grid">The grid to add the row to.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="message">The message.</param>
         private void AddRow(DataGridView grid, string fileName, string message)
         {
             if (grid.InvokeRequired)
@@ -96,16 +97,16 @@ namespace Nonoe.Tailz.GUI
             }
             else
             {
-                foreach (string lineToSet in message.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
+                foreach (var lineToSet in message.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
                 {
                     this.grdLogs.Rows.Add(fileName, lineToSet);
                 }
             }
         }
 
-        /// <summary>TODO The browse for tailfile button_ click.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
+        /// <summary>The browse for tail file button click event handler.</summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The event argument.</param>
         private void browseForTailfileButton_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
@@ -115,9 +116,9 @@ namespace Nonoe.Tailz.GUI
             }
         }
 
-        /// <summary>TODO The btn add watcher_ click.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
+        /// <summary>The add watcher button click event handler.</summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event argument.</param>
         private void btnAddWatcher_Click(object sender, EventArgs e)
         {
             var tail = new Tail(this.tailFilenameTextbox.Text);
@@ -125,41 +126,29 @@ namespace Nonoe.Tailz.GUI
             this.tails.Add(tail);
         }
 
-        /// <summary>TODO The clear button_ click.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
+        /// <summary>The clear button click event handler.</summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The event argument.</param>
         private void clearButton_Click(object sender, EventArgs e)
         {
             this.grdLogs.DataSource = null;
         }
 
-        /// <summary>TODO The grd tails_ user deleted row.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
-        private void grdTails_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            if (!this.tails.Any() && !this.chkApplicationEventLog.Checked && !this.chkSecurityEventLog.Checked
-                && !this.chkSystemEventLog.Checked)
-            {
-                this.stopTailButton_Click(null, null);
-            }
-        }
-
-        /// <summary>TODO The my tail_ more data.</summary>
-        /// <param name="tailObject">TODO The tail object.</param>
-        /// <param name="fileName">TODO The file name.</param>
-        /// <param name="newData">TODO The new data.</param>
+        /// <summary>The more data event handler.</summary>
+        /// <param name="tailObject">The tail object.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="newData">The new data.</param>
         private void myTail_MoreData(object tailObject, string fileName, string newData)
         {
             this.AddRow(this.grdLogs, fileName, newData);
         }
 
-        /// <summary>TODO The start tail button_ click.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
+        /// <summary>The start tail button click event handler.</summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The event argument.</param>
         private void startTailButton_Click(object sender, EventArgs e)
         {
-            foreach (Tail tail in this.tails)
+            foreach (var tail in this.tails)
             {
                 tail.Start();
             }
@@ -183,7 +172,7 @@ namespace Nonoe.Tailz.GUI
             }
             catch (SecurityException)
             {
-                MessageBox.Show("You do not have the correct privileges to run this now.");
+                MessageBox.Show("You have to run the application as administrator to perform this action.");
             }
 
             this.btnStop.Enabled = true;
@@ -195,12 +184,12 @@ namespace Nonoe.Tailz.GUI
             this.chkSystemEventLog.Enabled = false;
         }
 
-        /// <summary>TODO The stop tail button_ click.</summary>
-        /// <param name="sender">TODO The sender.</param>
-        /// <param name="e">TODO The e.</param>
+        /// <summary>The stop tail button click event handler.</summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The event argument.</param>
         private void stopTailButton_Click(object sender, EventArgs e)
         {
-            foreach (Tail tail in this.tails)
+            foreach (var tail in this.tails)
             {
                 tail.Stop();
             }

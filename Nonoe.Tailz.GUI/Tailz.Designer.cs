@@ -129,7 +129,6 @@
             this.grdTails.Size = new System.Drawing.Size(479, 113);
             this.grdTails.TabIndex = 19;
             this.grdTails.TabStop = false;
-            this.grdTails.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.grdTails_UserDeletedRow);
             // 
             // btnAddWatcher
             // 
