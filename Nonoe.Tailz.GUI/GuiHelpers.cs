@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nonoe.Tailz.GUI
+﻿namespace Nonoe.Tailz.GUI
 {
+    using System;
     using System.Drawing;
     using System.Windows.Forms;
 
@@ -36,19 +31,19 @@ namespace Nonoe.Tailz.GUI
                                             Anchor = AnchorStyles.Left | AnchorStyles.Top
                                         };
 
-            ScintillaNET.Scintilla txtPluginContent = new Scintilla
-                                                          {
-                                                              ConfigurationManager = { Language = "ruby" },
-                                                              Text =
-                                                                  "class Script " + Environment.NewLine
-                                                                  + "\tdef Run(text)" + Environment.NewLine
-                                                                  + "\t\t text = 'hello world: ' + text"
-                                                                  + Environment.NewLine + "\t end"
-                                                                  + Environment.NewLine + "end",
-                                                              Bounds = new Rectangle(12, 82, 372, 120),
-                                                              Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
-                                                              AutoSize = true
-                                                          };
+            Scintilla txtPluginContent = new Scintilla
+                                             {
+                                                 ConfigurationManager = { Language = "ruby" },
+                                                 Text =
+                                                     "class Script " + Environment.NewLine + "\tdef Run(text)"
+                                                     + Environment.NewLine
+                                                     + "\t\t text = 'hello world: ' + text"
+                                                     + Environment.NewLine + "\t end" + Environment.NewLine
+                                                     + "end",
+                                                 Bounds = new Rectangle(12, 82, 372, 120),
+                                                 Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
+                                                 AutoSize = true
+                                             };
 
             Button buttonOk = new Button
                                   {

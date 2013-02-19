@@ -44,7 +44,8 @@ namespace Nonoe.Tailz.GUI
         /// <summary>The inactive plugins that the application supports</summary>
         private readonly BindingList<Plugin> inactivePlugins;
 
-        private Plugins pluginBusiness;
+        /// <summary>The plugin business implementation</summary>
+        private readonly Plugins pluginBusiness;
 
         #endregion
 
@@ -167,9 +168,10 @@ namespace Nonoe.Tailz.GUI
                 foreach (var lineToSet in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
                 {
                     newData = RubyRunner.Run(activePlugin.RubyScript, lineToSet);
-                    this.AddRow(this.grdLogs, fileName, newData);
                 }
             }
+
+            this.AddRow(this.grdLogs, fileName, newData);
         }
 
         /// <summary>The start tail button click event handler.</summary>
@@ -251,7 +253,7 @@ namespace Nonoe.Tailz.GUI
 
         private void btnMakeActive_Click(object sender, EventArgs e)
         {
-            // This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
+            // TODO: This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
             // This is just a temporary mix. Only for testing purposes.
             foreach (DataGridViewRow row in this.grdInactivePlugins.SelectedRows)
             {
@@ -267,7 +269,7 @@ namespace Nonoe.Tailz.GUI
 
         private void btnMakeInactive_Click(object sender, EventArgs e)
         {
-            // This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
+            // TODO: This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
             // This is just a temporary mix. Only for testing purposes.
             foreach (DataGridViewRow row in this.grdActivePlugins.SelectedRows)
             {
