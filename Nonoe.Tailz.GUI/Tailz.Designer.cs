@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.browseForTailfileButton = new System.Windows.Forms.Button();
             this.tailFilenameTextbox = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
@@ -40,24 +42,31 @@
             this.chkSecurityEventLog = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.grdLogs = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnCreatePlugin = new System.Windows.Forms.Button();
+            this.btnMakeInactive = new System.Windows.Forms.Button();
+            this.btnMakeActive = new System.Windows.Forms.Button();
+            this.grdInactivePlugins = new System.Windows.Forms.DataGridView();
+            this.grdActivePlugins = new System.Windows.Forms.DataGridView();
+            this.grdLogs = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.grdTails)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).BeginInit();
             this.groupBox3.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).BeginInit();
             this.SuspendLayout();
             // 
             // browseForTailfileButton
             // 
             this.browseForTailfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.browseForTailfileButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.browseForTailfileButton.Location = new System.Drawing.Point(215, 20);
+            this.browseForTailfileButton.Location = new System.Drawing.Point(215, 19);
             this.browseForTailfileButton.Name = "browseForTailfileButton";
             this.browseForTailfileButton.Size = new System.Drawing.Size(72, 23);
             this.browseForTailfileButton.TabIndex = 10;
@@ -72,7 +81,6 @@
             this.tailFilenameTextbox.Name = "tailFilenameTextbox";
             this.tailFilenameTextbox.Size = new System.Drawing.Size(203, 20);
             this.tailFilenameTextbox.TabIndex = 9;
-            this.tailFilenameTextbox.Text = "c:\\temp\\Installs - Copy (2).txt";
             // 
             // btnClear
             // 
@@ -126,7 +134,7 @@
             this.grdTails.ShowCellToolTips = false;
             this.grdTails.ShowEditingIcon = false;
             this.grdTails.ShowRowErrors = false;
-            this.grdTails.Size = new System.Drawing.Size(479, 113);
+            this.grdTails.Size = new System.Drawing.Size(359, 113);
             this.grdTails.TabIndex = 19;
             this.grdTails.TabStop = false;
             // 
@@ -134,7 +142,7 @@
             // 
             this.btnAddWatcher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddWatcher.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnAddWatcher.Location = new System.Drawing.Point(293, 20);
+            this.btnAddWatcher.Location = new System.Drawing.Point(293, 19);
             this.btnAddWatcher.Name = "btnAddWatcher";
             this.btnAddWatcher.Size = new System.Drawing.Size(72, 23);
             this.btnAddWatcher.TabIndex = 20;
@@ -176,7 +184,7 @@
             this.groupBox1.Controls.Add(this.chkApplicationEventLog);
             this.groupBox1.Controls.Add(this.chkSystemEventLog);
             this.groupBox1.Controls.Add(this.chkSecurityEventLog);
-            this.groupBox1.Location = new System.Drawing.Point(690, 12);
+            this.groupBox1.Location = new System.Drawing.Point(569, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(107, 173);
             this.groupBox1.TabIndex = 26;
@@ -191,21 +199,10 @@
             this.groupBox2.Controls.Add(this.browseForTailfileButton);
             this.groupBox2.Location = new System.Drawing.Point(186, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(498, 173);
+            this.groupBox2.Size = new System.Drawing.Size(377, 173);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Files";
-            // 
-            // grdLogs
-            // 
-            this.grdLogs.AllowUserToAddRows = false;
-            this.grdLogs.AllowUserToDeleteRows = false;
-            this.grdLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grdLogs.Location = new System.Drawing.Point(0, 0);
-            this.grdLogs.Name = "grdLogs";
-            this.grdLogs.Size = new System.Drawing.Size(805, 332);
-            this.grdLogs.TabIndex = 28;
             // 
             // groupBox3
             // 
@@ -219,33 +216,115 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Controls";
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.grdLogs);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(805, 332);
-            this.panel1.TabIndex = 30;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.groupBox4);
             this.panel2.Controls.Add(this.groupBox3);
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(805, 194);
+            this.panel2.Size = new System.Drawing.Size(946, 194);
             this.panel2.TabIndex = 31;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnCreatePlugin);
+            this.groupBox4.Controls.Add(this.btnMakeInactive);
+            this.groupBox4.Controls.Add(this.btnMakeActive);
+            this.groupBox4.Controls.Add(this.grdInactivePlugins);
+            this.groupBox4.Controls.Add(this.grdActivePlugins);
+            this.groupBox4.Location = new System.Drawing.Point(682, 12);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(253, 173);
+            this.groupBox4.TabIndex = 27;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Plugins";
+            // 
+            // btnCreatePlugin
+            // 
+            this.btnCreatePlugin.Location = new System.Drawing.Point(8, 145);
+            this.btnCreatePlugin.Name = "btnCreatePlugin";
+            this.btnCreatePlugin.Size = new System.Drawing.Size(99, 22);
+            this.btnCreatePlugin.TabIndex = 4;
+            this.btnCreatePlugin.Text = "Create plugin";
+            this.btnCreatePlugin.UseVisualStyleBackColor = true;
+            this.btnCreatePlugin.Click += new System.EventHandler(this.btnManagePlugins_Click);
+            // 
+            // btnMakeInactive
+            // 
+            this.btnMakeInactive.Location = new System.Drawing.Point(113, 75);
+            this.btnMakeInactive.Name = "btnMakeInactive";
+            this.btnMakeInactive.Size = new System.Drawing.Size(27, 22);
+            this.btnMakeInactive.TabIndex = 3;
+            this.btnMakeInactive.Text = ">>";
+            this.btnMakeInactive.UseVisualStyleBackColor = true;
+            this.btnMakeInactive.Click += new System.EventHandler(this.btnMakeInactive_Click);
+            // 
+            // btnMakeActive
+            // 
+            this.btnMakeActive.Location = new System.Drawing.Point(113, 45);
+            this.btnMakeActive.Name = "btnMakeActive";
+            this.btnMakeActive.Size = new System.Drawing.Size(27, 22);
+            this.btnMakeActive.TabIndex = 2;
+            this.btnMakeActive.Text = "<<";
+            this.btnMakeActive.UseVisualStyleBackColor = true;
+            this.btnMakeActive.Click += new System.EventHandler(this.btnMakeActive_Click);
+            // 
+            // grdInactivePlugins
+            // 
+            this.grdInactivePlugins.AllowUserToAddRows = false;
+            this.grdInactivePlugins.AllowUserToDeleteRows = false;
+            this.grdInactivePlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdInactivePlugins.Location = new System.Drawing.Point(146, 15);
+            this.grdInactivePlugins.Name = "grdInactivePlugins";
+            this.grdInactivePlugins.ReadOnly = true;
+            this.grdInactivePlugins.RowHeadersVisible = false;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Red;
+            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
+            this.grdInactivePlugins.TabIndex = 1;
+            // 
+            // grdActivePlugins
+            // 
+            this.grdActivePlugins.AllowUserToAddRows = false;
+            this.grdActivePlugins.AllowUserToDeleteRows = false;
+            this.grdActivePlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdActivePlugins.Location = new System.Drawing.Point(8, 15);
+            this.grdActivePlugins.Name = "grdActivePlugins";
+            this.grdActivePlugins.ReadOnly = true;
+            this.grdActivePlugins.RowHeadersVisible = false;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
+            this.grdActivePlugins.TabIndex = 0;
+            // 
+            // grdLogs
+            // 
+            this.grdLogs.AllowUserToAddRows = false;
+            this.grdLogs.AllowUserToDeleteRows = false;
+            this.grdLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grdLogs.Location = new System.Drawing.Point(0, 194);
+            this.grdLogs.Name = "grdLogs";
+            this.grdLogs.ReadOnly = true;
+            this.grdLogs.RowHeadersVisible = false;
+            this.grdLogs.Size = new System.Drawing.Size(946, 465);
+            this.grdLogs.TabIndex = 32;
             // 
             // Tailz
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 332);
+            this.ClientSize = new System.Drawing.Size(946, 659);
+            this.Controls.Add(this.grdLogs);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MinimumSize = new System.Drawing.Size(821, 370);
             this.Name = "Tailz";
             this.Text = "Tailz";
@@ -254,10 +333,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).EndInit();
             this.groupBox3.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -276,10 +357,15 @@
         private System.Windows.Forms.CheckBox chkSecurityEventLog;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DataGridView grdLogs;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.DataGridView grdLogs;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button btnMakeInactive;
+        private System.Windows.Forms.Button btnMakeActive;
+        private System.Windows.Forms.DataGridView grdInactivePlugins;
+        private System.Windows.Forms.DataGridView grdActivePlugins;
+        private System.Windows.Forms.Button btnCreatePlugin;
     }
 }
 

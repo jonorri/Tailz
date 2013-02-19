@@ -18,6 +18,8 @@ namespace Nonoe.Tailz.GUI
     using System.Windows.Forms;
 
     using Nonoe.Tailz.Core;
+    using Nonoe.Tailz.Core.Objects;
+    using Nonoe.Tailz.Core.Ruby;
 
     /// <summary>The main/only form.</summary>
     public partial class Tailz : Form
@@ -35,6 +37,14 @@ namespace Nonoe.Tailz.GUI
 
         /// <summary>The log tails that are running.</summary>
         private readonly BindingList<Tail> tails;
+
+        /// <summary>The active plugins that the application supports</summary>
+        private readonly BindingList<Plugin> activePlugins;
+
+        /// <summary>The inactive plugins that the application supports</summary>
+        private readonly BindingList<Plugin> inactivePlugins;
+
+        private Plugins pluginBusiness;
 
         #endregion
 
@@ -56,6 +66,16 @@ namespace Nonoe.Tailz.GUI
             this.securityEventLog.EntryWritten += this.OnEventLog;
             this.systemEventLog = new EventLog { Log = "System", MachineName = "." };
             this.systemEventLog.EntryWritten += this.OnEventLog;
+
+            this.pluginBusiness = new Plugins();
+            this.pluginBusiness.Plugin += this.OnPluginCreated;
+
+            // Fetch from the data store.
+            this.inactivePlugins = new BindingList<Plugin>();
+            this.activePlugins = new BindingList<Plugin>();
+
+            this.grdActivePlugins.DataSource = this.activePlugins;
+            this.grdInactivePlugins.DataSource = this.inactivePlugins;
         }
 
         #endregion
@@ -97,11 +117,13 @@ namespace Nonoe.Tailz.GUI
             }
             else
             {
-                foreach (var lineToSet in message.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
-                {
-                    this.grdLogs.Rows.Add(fileName, lineToSet);
-                }
+                this.grdLogs.Rows.Add(fileName, message);
             }
+        }
+
+        private void OnPluginCreated(object sender, string pluginName, string rubyScript)
+        {
+            this.inactivePlugins.Add(new Plugin { Active = false, PluginName = pluginName, RubyScript = rubyScript });
         }
 
         /// <summary>The browse for tail file button click event handler.</summary>
@@ -131,7 +153,7 @@ namespace Nonoe.Tailz.GUI
         /// <param name="e">The event argument.</param>
         private void clearButton_Click(object sender, EventArgs e)
         {
-            this.grdLogs.DataSource = null;
+            this.grdLogs.Rows.Clear();
         }
 
         /// <summary>The more data event handler.</summary>
@@ -140,7 +162,14 @@ namespace Nonoe.Tailz.GUI
         /// <param name="newData">The new data.</param>
         private void myTail_MoreData(object tailObject, string fileName, string newData)
         {
-            this.AddRow(this.grdLogs, fileName, newData);
+            foreach (var activePlugin in this.activePlugins)
+            {
+                foreach (var lineToSet in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
+                {
+                    newData = RubyRunner.Run(activePlugin.RubyScript, lineToSet);
+                    this.AddRow(this.grdLogs, fileName, newData);
+                }
+            }
         }
 
         /// <summary>The start tail button click event handler.</summary>
@@ -219,5 +248,47 @@ namespace Nonoe.Tailz.GUI
         }
 
         #endregion
+
+        private void btnMakeActive_Click(object sender, EventArgs e)
+        {
+            // This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
+            // This is just a temporary mix. Only for testing purposes.
+            foreach (DataGridViewRow row in this.grdInactivePlugins.SelectedRows)
+            {
+                string pluginName = this.grdInactivePlugins.Rows[row.Index].Cells["PluginName"].Value.ToString();
+                string pluginContent = this.grdInactivePlugins.Rows[row.Index].Cells["RubyScript"].Value.ToString();
+                this.pluginBusiness.ChangePluginActivity(pluginName, pluginContent, true);
+                var plugin = this.inactivePlugins.First(x => x.PluginName == pluginName && x.RubyScript == pluginContent);
+                this.inactivePlugins.Remove(plugin);
+                plugin.Active = true;
+                this.activePlugins.Add(plugin);
+            }
+        }
+
+        private void btnMakeInactive_Click(object sender, EventArgs e)
+        {
+            // This shouldn't be done here. Have to fix this with for example Event InactivePluginsChanged && ActivePluginsChanged
+            // This is just a temporary mix. Only for testing purposes.
+            foreach (DataGridViewRow row in this.grdActivePlugins.SelectedRows)
+            {
+                string pluginName = this.grdActivePlugins.Rows[row.Index].Cells["PluginName"].Value.ToString();
+                string pluginContent = this.grdActivePlugins.Rows[row.Index].Cells["RubyScript"].Value.ToString();
+                this.pluginBusiness.ChangePluginActivity(pluginName, pluginContent, false);
+                var plugin = this.activePlugins.First(x => x.PluginName == pluginName && x.RubyScript == pluginContent);
+                this.activePlugins.Remove(plugin);
+                plugin.Active = false;
+                this.inactivePlugins.Add(plugin);
+            }
+        }
+
+        private void btnManagePlugins_Click(object sender, EventArgs e)
+        {
+            string pluginName = string.Empty;
+            string pluginContent = string.Empty;
+            if (GuiHelpers.InputBox(ref pluginName, ref pluginContent) == DialogResult.OK)
+            {
+                this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
+            }
+        }
     }
 }

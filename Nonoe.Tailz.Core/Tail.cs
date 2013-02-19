@@ -82,6 +82,7 @@
             {
                 this.previousSeekPosition = fs.Length - maxBytes;
             }
+
             this.previousSeekPosition = (int)fs.Seek(this.previousSeekPosition, SeekOrigin.Begin);
             int numBytes = fs.Read(bytesRead, 0, maxBytes);
             fs.Close();
