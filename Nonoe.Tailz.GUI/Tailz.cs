@@ -292,5 +292,13 @@ namespace Nonoe.Tailz.GUI
                 this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
             }
         }
+
+        private void grdLogs_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            while (grdLogs.RowCount >= nmbMaxLines.Value)
+            {
+                grdLogs.Rows.RemoveAt(0);
+            }
+        }
     }
 }

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.browseForTailfileButton = new System.Windows.Forms.Button();
             this.tailFilenameTextbox = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
@@ -51,6 +51,8 @@
             this.grdInactivePlugins = new System.Windows.Forms.DataGridView();
             this.grdActivePlugins = new System.Windows.Forms.DataGridView();
             this.grdLogs = new System.Windows.Forms.DataGridView();
+            this.nmbMaxLines = new System.Windows.Forms.NumericUpDown();
+            this.lblMaxLines = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdTails)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -60,6 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).BeginInit();
             this.SuspendLayout();
             // 
             // browseForTailfileButton
@@ -86,7 +89,7 @@
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnClear.Location = new System.Drawing.Point(6, 44);
+            this.btnClear.Location = new System.Drawing.Point(68, 144);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(56, 23);
             this.btnClear.TabIndex = 18;
@@ -206,6 +209,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.lblMaxLines);
+            this.groupBox3.Controls.Add(this.nmbMaxLines);
             this.groupBox3.Controls.Add(this.btnStop);
             this.groupBox3.Controls.Add(this.btnStart);
             this.groupBox3.Controls.Add(this.btnClear);
@@ -281,9 +286,9 @@
             this.grdInactivePlugins.Name = "grdInactivePlugins";
             this.grdInactivePlugins.ReadOnly = true;
             this.grdInactivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Red;
-            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Red;
+            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdInactivePlugins.TabIndex = 1;
@@ -297,9 +302,9 @@
             this.grdActivePlugins.Name = "grdActivePlugins";
             this.grdActivePlugins.ReadOnly = true;
             this.grdActivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdActivePlugins.TabIndex = 0;
@@ -316,6 +321,23 @@
             this.grdLogs.RowHeadersVisible = false;
             this.grdLogs.Size = new System.Drawing.Size(946, 465);
             this.grdLogs.TabIndex = 32;
+            this.grdLogs.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.grdLogs_RowsAdded);
+            // 
+            // nmbMaxLines
+            // 
+            this.nmbMaxLines.Location = new System.Drawing.Point(6, 57);
+            this.nmbMaxLines.Name = "nmbMaxLines";
+            this.nmbMaxLines.Size = new System.Drawing.Size(118, 20);
+            this.nmbMaxLines.TabIndex = 26;
+            // 
+            // lblMaxLines
+            // 
+            this.lblMaxLines.AutoSize = true;
+            this.lblMaxLines.Location = new System.Drawing.Point(6, 41);
+            this.lblMaxLines.Name = "lblMaxLines";
+            this.lblMaxLines.Size = new System.Drawing.Size(51, 13);
+            this.lblMaxLines.TabIndex = 26;
+            this.lblMaxLines.Text = "Max lines";
             // 
             // Tailz
             // 
@@ -334,11 +356,13 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -366,6 +390,8 @@
         private System.Windows.Forms.DataGridView grdInactivePlugins;
         private System.Windows.Forms.DataGridView grdActivePlugins;
         private System.Windows.Forms.Button btnCreatePlugin;
+        private System.Windows.Forms.Label lblMaxLines;
+        private System.Windows.Forms.NumericUpDown nmbMaxLines;
     }
 }
 
