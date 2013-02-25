@@ -118,10 +118,10 @@ namespace Nonoe.Tailz.GUI
             }
             else
             {
-                this.grdLogs.Rows.Add(fileName, message);
+                this.grdLogs.Rows.Insert(0, fileName, message);
                 while (this.grdLogs.RowCount >= this.nmbMaxLines.Value)
                 {
-                    this.grdLogs.Rows.RemoveAt(0);
+                    this.grdLogs.Rows.RemoveAt(this.grdLogs.RowCount - 1);
                 }
             }
         }
