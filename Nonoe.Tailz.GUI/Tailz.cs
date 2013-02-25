@@ -47,6 +47,9 @@ namespace Nonoe.Tailz.GUI
         /// <summary>The plugin business implementation</summary>
         private readonly Plugins pluginBusiness;
 
+        /// <summary>All the logs that the system is monitoring</summary>
+        private readonly BindingList<Log> logs;
+
         #endregion
 
         #region Constructors and Destructors
@@ -58,8 +61,8 @@ namespace Nonoe.Tailz.GUI
             this.tails = new BindingList<Tail>();
             this.grdTails.DataSource = this.tails;
 
-            this.grdLogs.Columns.Add("File", "File");
-            this.grdLogs.Columns.Add("Message", "Message");
+            this.logs = new BindingList<Log>();
+            this.grdLogs.DataSource = this.logs;
 
             this.applicationEventLog = new EventLog { Log = "Application", MachineName = "." };
             this.applicationEventLog.EntryWritten += this.OnEventLog;
@@ -118,10 +121,10 @@ namespace Nonoe.Tailz.GUI
             }
             else
             {
-                this.grdLogs.Rows.Insert(0, fileName, message);
+                this.logs.Add(new Log { File = fileName, Message = message, Date = DateTime.UtcNow});
                 while (this.grdLogs.RowCount >= this.nmbMaxLines.Value)
                 {
-                    this.grdLogs.Rows.RemoveAt(this.grdLogs.RowCount - 1);
+                    //this.logs.RemoveAt(this.grdLogs.RowCount - 1);
                 }
             }
         }
@@ -158,7 +161,7 @@ namespace Nonoe.Tailz.GUI
         /// <param name="e">The event argument.</param>
         private void clearButton_Click(object sender, EventArgs e)
         {
-            this.grdLogs.Rows.Clear();
+            this.logs.Clear();
         }
 
         /// <summary>The more data event handler.</summary>
@@ -296,6 +299,12 @@ namespace Nonoe.Tailz.GUI
             {
                 this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
             }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            // TODO: KRAPP
+            throw new NotImplementedException();
         }
     }
 }

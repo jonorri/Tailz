@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.browseForTailfileButton = new System.Windows.Forms.Button();
             this.tailFilenameTextbox = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
@@ -43,6 +43,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblMaxLines = new System.Windows.Forms.Label();
+            this.nmbMaxLines = new System.Windows.Forms.NumericUpDown();
             this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnCreatePlugin = new System.Windows.Forms.Button();
@@ -51,18 +53,21 @@
             this.grdInactivePlugins = new System.Windows.Forms.DataGridView();
             this.grdActivePlugins = new System.Windows.Forms.DataGridView();
             this.grdLogs = new System.Windows.Forms.DataGridView();
-            this.nmbMaxLines = new System.Windows.Forms.NumericUpDown();
-            this.lblMaxLines = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.chkEnableRegExSearch = new System.Windows.Forms.CheckBox();
+            this.lblSearch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdTails)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).BeginInit();
             this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // browseForTailfileButton
@@ -221,6 +226,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Controls";
             // 
+            // lblMaxLines
+            // 
+            this.lblMaxLines.AutoSize = true;
+            this.lblMaxLines.Location = new System.Drawing.Point(6, 41);
+            this.lblMaxLines.Name = "lblMaxLines";
+            this.lblMaxLines.Size = new System.Drawing.Size(51, 13);
+            this.lblMaxLines.TabIndex = 26;
+            this.lblMaxLines.Text = "Max lines";
+            // 
+            // nmbMaxLines
+            // 
+            this.nmbMaxLines.Location = new System.Drawing.Point(6, 57);
+            this.nmbMaxLines.Name = "nmbMaxLines";
+            this.nmbMaxLines.Size = new System.Drawing.Size(118, 20);
+            this.nmbMaxLines.TabIndex = 26;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.groupBox4);
@@ -286,9 +307,9 @@
             this.grdInactivePlugins.Name = "grdInactivePlugins";
             this.grdInactivePlugins.ReadOnly = true;
             this.grdInactivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Red;
-            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Red;
+            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdInactivePlugins.TabIndex = 1;
@@ -302,9 +323,9 @@
             this.grdActivePlugins.Name = "grdActivePlugins";
             this.grdActivePlugins.ReadOnly = true;
             this.grdActivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdActivePlugins.TabIndex = 0;
@@ -315,28 +336,53 @@
             this.grdLogs.AllowUserToDeleteRows = false;
             this.grdLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grdLogs.Location = new System.Drawing.Point(0, 194);
+            this.grdLogs.Location = new System.Drawing.Point(0, 229);
             this.grdLogs.Name = "grdLogs";
             this.grdLogs.ReadOnly = true;
             this.grdLogs.RowHeadersVisible = false;
-            this.grdLogs.Size = new System.Drawing.Size(946, 465);
+            this.grdLogs.Size = new System.Drawing.Size(946, 430);
             this.grdLogs.TabIndex = 32;
             // 
-            // nmbMaxLines
+            // panel1
             // 
-            this.nmbMaxLines.Location = new System.Drawing.Point(6, 57);
-            this.nmbMaxLines.Name = "nmbMaxLines";
-            this.nmbMaxLines.Size = new System.Drawing.Size(118, 20);
-            this.nmbMaxLines.TabIndex = 26;
+            this.panel1.Controls.Add(this.lblSearch);
+            this.panel1.Controls.Add(this.chkEnableRegExSearch);
+            this.panel1.Controls.Add(this.txtSearch);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 194);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(946, 35);
+            this.panel1.TabIndex = 33;
             // 
-            // lblMaxLines
+            // txtSearch
             // 
-            this.lblMaxLines.AutoSize = true;
-            this.lblMaxLines.Location = new System.Drawing.Point(6, 41);
-            this.lblMaxLines.Name = "lblMaxLines";
-            this.lblMaxLines.Size = new System.Drawing.Size(51, 13);
-            this.lblMaxLines.TabIndex = 26;
-            this.lblMaxLines.Text = "Max lines";
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(56, 7);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(203, 20);
+            this.txtSearch.TabIndex = 10;
+            this.txtSearch.Text = "Start typing ...";
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // chkEnableRegExSearch
+            // 
+            this.chkEnableRegExSearch.AutoSize = true;
+            this.chkEnableRegExSearch.Location = new System.Drawing.Point(278, 10);
+            this.chkEnableRegExSearch.Name = "chkEnableRegExSearch";
+            this.chkEnableRegExSearch.Size = new System.Drawing.Size(182, 17);
+            this.chkEnableRegExSearch.TabIndex = 25;
+            this.chkEnableRegExSearch.Text = "Enable regular expression search";
+            this.chkEnableRegExSearch.UseVisualStyleBackColor = true;
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(9, 10);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(41, 13);
+            this.lblSearch.TabIndex = 26;
+            this.lblSearch.Text = "Search";
             // 
             // Tailz
             // 
@@ -344,6 +390,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(946, 659);
             this.Controls.Add(this.grdLogs);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MinimumSize = new System.Drawing.Size(821, 370);
@@ -356,12 +403,14 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).EndInit();
             this.panel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdInactivePlugins)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdActivePlugins)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdLogs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmbMaxLines)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -391,6 +440,10 @@
         private System.Windows.Forms.Button btnCreatePlugin;
         private System.Windows.Forms.Label lblMaxLines;
         private System.Windows.Forms.NumericUpDown nmbMaxLines;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.CheckBox chkEnableRegExSearch;
+        private System.Windows.Forms.TextBox txtSearch;
     }
 }
 
