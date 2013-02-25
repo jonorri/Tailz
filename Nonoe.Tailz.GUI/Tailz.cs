@@ -167,12 +167,14 @@ namespace Nonoe.Tailz.GUI
         /// <param name="newData">The new data.</param>
         private void myTail_MoreData(object tailObject, string fileName, string newData)
         {
-            foreach (var lineToSet in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
+            foreach (string lineToUse in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
             {
+                string lineToSet = lineToUse;
                 foreach (var activePlugin in this.activePlugins)
                 {
-                    lineToSet = RubyRunner.Run(activePlugin.RubyScript, lineToSet);
+                    lineToSet = RubyRunner.Run(activePlugin.RubyScript, lineToUse);
                 }
+
                 this.AddRow(this.grdLogs, fileName, lineToSet);
             }
         }
