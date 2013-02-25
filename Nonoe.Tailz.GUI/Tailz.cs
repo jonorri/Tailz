@@ -119,6 +119,10 @@ namespace Nonoe.Tailz.GUI
             else
             {
                 this.grdLogs.Rows.Add(fileName, message);
+                while (this.grdLogs.RowCount >= this.nmbMaxLines.Value)
+                {
+                    this.grdLogs.Rows.RemoveAt(0);
+                }
             }
         }
 
@@ -163,15 +167,14 @@ namespace Nonoe.Tailz.GUI
         /// <param name="newData">The new data.</param>
         private void myTail_MoreData(object tailObject, string fileName, string newData)
         {
-            foreach (var activePlugin in this.activePlugins)
+            foreach (var lineToSet in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
             {
-                foreach (var lineToSet in newData.Split('\n').Select(line => line.Replace("\n", string.Empty).Replace("\r", string.Empty)).Where(lineToSet => !string.IsNullOrWhiteSpace(lineToSet)))
+                foreach (var activePlugin in this.activePlugins)
                 {
-                    newData = RubyRunner.Run(activePlugin.RubyScript, lineToSet);
+                    lineToSet = RubyRunner.Run(activePlugin.RubyScript, lineToSet);
                 }
+                this.AddRow(this.grdLogs, fileName, lineToSet);
             }
-
-            this.AddRow(this.grdLogs, fileName, newData);
         }
 
         /// <summary>The start tail button click event handler.</summary>
@@ -290,14 +293,6 @@ namespace Nonoe.Tailz.GUI
             if (GuiHelpers.InputBox(ref pluginName, ref pluginContent) == DialogResult.OK)
             {
                 this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
-            }
-        }
-
-        private void grdLogs_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            while (grdLogs.RowCount >= nmbMaxLines.Value)
-            {
-                grdLogs.Rows.RemoveAt(0);
             }
         }
     }

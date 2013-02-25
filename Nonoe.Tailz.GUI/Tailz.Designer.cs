@@ -321,7 +321,6 @@
             this.grdLogs.RowHeadersVisible = false;
             this.grdLogs.Size = new System.Drawing.Size(946, 465);
             this.grdLogs.TabIndex = 32;
-            this.grdLogs.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.grdLogs_RowsAdded);
             // 
             // nmbMaxLines
             // 
