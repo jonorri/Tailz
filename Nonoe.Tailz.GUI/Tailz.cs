@@ -104,7 +104,14 @@ namespace Nonoe.Tailz.GUI
         /// <param name="entryWrittenEventArgs">The entry written event argument.</param>
         public void OnEventLog(object source, EntryWrittenEventArgs entryWrittenEventArgs)
         {
-            this.AddRow(this.grdLogs, entryWrittenEventArgs.Entry.Source, entryWrittenEventArgs.Entry.Message);
+            try
+            {
+                this.AddRow(this.grdLogs, entryWrittenEventArgs.Entry.Source, entryWrittenEventArgs.Entry.Message);
+            }
+            catch (Exception ex)
+            {
+                this.ShowErrorBox("Error occured when an event log occured:" + ex.Message);
+            }
         }
 
         #endregion
@@ -302,8 +309,20 @@ namespace Nonoe.Tailz.GUI
             string pluginContent = string.Empty;
             if (GuiHelpers.InputBox(ref pluginName, ref pluginContent) == DialogResult.OK)
             {
-                this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
+                try
+                {
+                    this.pluginBusiness.CreatePlugin(pluginName, pluginContent);
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorBox("Error occured when deleting row:" + ex.Message);
+                }
             }
+        }
+
+        private void ShowErrorBox(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -338,7 +357,14 @@ namespace Nonoe.Tailz.GUI
 
         private void DeletePlugin(string pluginName, bool activity)
         {
-            this.pluginBusiness.DeletePlugin(pluginName, activity);
+            try
+            {
+                this.pluginBusiness.DeletePlugin(pluginName, activity);
+            }
+            catch (Exception ex)
+            {
+                this.ShowErrorBox("Error occured when deleting row:" + ex.Message);
+            }
         }
 
         private void grdInactivePlugins_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

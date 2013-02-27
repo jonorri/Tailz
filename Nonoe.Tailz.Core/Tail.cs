@@ -9,6 +9,7 @@
 
 namespace Nonoe.Tailz.Core
 {
+    using System;
     using System.IO;
     using System.Text;
 
@@ -162,27 +163,34 @@ namespace Nonoe.Tailz.Core
         /// <param name="e">The e.</param>
         public void TargetFile_Changed(object source, FileSystemEventArgs e)
         {
-            // read from current seek position to end of file
-            var bytesRead = new byte[this.maxBytes];
-            var fs = new FileStream(this.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            if (fs.Length > this.maxBytes)
+            try
             {
-                this.previousSeekPosition = fs.Length - this.maxBytes;
+                // read from current seek position to end of file
+                var bytesRead = new byte[this.maxBytes];
+                var fs = new FileStream(this.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                if (fs.Length > this.maxBytes)
+                {
+                    this.previousSeekPosition = fs.Length - this.maxBytes;
+                }
+
+                this.previousSeekPosition = (int)fs.Seek(this.previousSeekPosition, SeekOrigin.Begin);
+                int numBytes = fs.Read(bytesRead, 0, this.maxBytes);
+                fs.Close();
+                this.previousSeekPosition += numBytes;
+
+                var sb = new StringBuilder();
+                for (int i = 0; i < numBytes; i++)
+                {
+                    sb.Append((char)bytesRead[i]);
+                }
+
+                // call delegates with the string
+                this.MoreData(this, this.FileName, sb.ToString());
             }
-
-            this.previousSeekPosition = (int)fs.Seek(this.previousSeekPosition, SeekOrigin.Begin);
-            int numBytes = fs.Read(bytesRead, 0, this.maxBytes);
-            fs.Close();
-            this.previousSeekPosition += numBytes;
-
-            var sb = new StringBuilder();
-            for (int i = 0; i < numBytes; i++)
+            catch (Exception ex)
             {
-                sb.Append((char)bytesRead[i]);
+                this.ErrorOccured(this, this.FileName);
             }
-
-            // call delegates with the string
-            this.MoreData(this, this.FileName, sb.ToString());
         }
 
         /// <summary>
