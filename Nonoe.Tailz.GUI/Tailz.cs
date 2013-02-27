@@ -11,10 +11,13 @@
 namespace Nonoe.Tailz.GUI
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Linq;
     using System.Security;
+    using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
     using Nonoe.Tailz.Core;
@@ -75,8 +78,8 @@ namespace Nonoe.Tailz.GUI
             this.pluginBusiness.Plugin += this.OnPluginCreated;
 
             // Fetch from the data store.
-            this.inactivePlugins = new BindingList<Plugin>();
-            this.activePlugins = new BindingList<Plugin>();
+            this.inactivePlugins = new BindingList<Plugin>(this.pluginBusiness.GetPluginsByActivity(false));
+            this.activePlugins = new BindingList<Plugin>(this.pluginBusiness.GetPluginsByActivity(true));
 
             this.grdActivePlugins.DataSource = this.activePlugins;
             this.grdInactivePlugins.DataSource = this.inactivePlugins;
@@ -121,11 +124,13 @@ namespace Nonoe.Tailz.GUI
             }
             else
             {
-                this.logs.Add(new Log { File = fileName, Message = message, Date = DateTime.UtcNow});
-                while (this.grdLogs.RowCount >= this.nmbMaxLines.Value)
+                this.logs.Insert(0, new Log { File = fileName, Message = message, Date = DateTime.UtcNow });
+                while (this.grdLogs.RowCount > this.nmbMaxLines.Value)
                 {
-                    //this.logs.RemoveAt(this.grdLogs.RowCount - 1);
+                    this.logs.RemoveAt(this.grdLogs.RowCount - 1);
                 }
+
+                this.txtSearch_TextChanged(new object(), new EventArgs());
             }
         }
 
@@ -303,8 +308,32 @@ namespace Nonoe.Tailz.GUI
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            // TODO: KRAPP
-            throw new NotImplementedException();
+            this.txtSearch.ForeColor = Color.Black;
+            if (string.IsNullOrWhiteSpace(this.txtSearch.Text))
+            {
+                this.grdLogs.DataSource = null;
+                this.grdLogs.DataSource = this.logs;
+            }
+            else
+            {
+                this.grdLogs.DataSource = null;
+                try
+                {
+                    if (this.chkEnableRegExSearch.Checked)
+                    {
+                        Regex regEx = new Regex(this.txtSearch.Text);
+                        this.grdLogs.DataSource = new BindingList<Log>(this.logs.Where(x => regEx.IsMatch(x.File) || regEx.IsMatch(x.Message)).ToList());
+                    }
+                    else
+                    {
+                        this.grdLogs.DataSource = new BindingList<Log>(this.logs.Where(x => x.File.ToLower().Contains(this.txtSearch.Text.ToLower()) || x.Message.ToLower().Contains(this.txtSearch.Text.ToLower())).ToList());
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    this.txtSearch.ForeColor = Color.Red;
+                }
+            }
         }
     }
 }

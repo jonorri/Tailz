@@ -1,8 +1,10 @@
 ﻿namespace Nonoe.Tailz.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Nonoe.Tailz.Core.DAL;
     using Nonoe.Tailz.Core.Objects;
 
     public class Plugins
@@ -13,20 +15,27 @@
         public delegate void PluginChangedHandler(object sender);
         public event PluginChangedHandler PluginChanged;
 
+        private PluginDAL pluginDal = new PluginDAL();
+
+        public Plugins()
+        {
+            
+        }
+
         public void CreatePlugin(string pluginName, string rubyScript)
         {
-            // TODO: Store this somewhere so the user doesn't have to create all the plugins at each invocation.
+            this.pluginDal.Add(pluginName, rubyScript);
             this.Plugin(this, pluginName, rubyScript);
         }
 
-        public Collection<Plugin> GetPlugins()
+        public IList<Plugin> GetPluginsByActivity(bool activity)
         {
-            throw new NotImplementedException();
+            return this.pluginDal.GetPluginsByActivity(activity);
         }
 
         public void ChangePluginActivity(string pluginName, string pluginContent, bool active)
         {
-            // TODO: Update this somewhere so the user doesn't have to create all the plugins at each invocation.
+            this.pluginDal.ChangePluginActivity(pluginName, active);
         }
     }
 }

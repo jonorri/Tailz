@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.browseForTailfileButton = new System.Windows.Forms.Button();
             this.tailFilenameTextbox = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
@@ -54,9 +54,9 @@
             this.grdActivePlugins = new System.Windows.Forms.DataGridView();
             this.grdLogs = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.chkEnableRegExSearch = new System.Windows.Forms.CheckBox();
             this.lblSearch = new System.Windows.Forms.Label();
+            this.chkEnableRegExSearch = new System.Windows.Forms.CheckBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.grdTails)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -238,9 +238,19 @@
             // nmbMaxLines
             // 
             this.nmbMaxLines.Location = new System.Drawing.Point(6, 57);
+            this.nmbMaxLines.Maximum = new decimal(new int[] {
+            -1530494977,
+            232830,
+            0,
+            0});
             this.nmbMaxLines.Name = "nmbMaxLines";
             this.nmbMaxLines.Size = new System.Drawing.Size(118, 20);
             this.nmbMaxLines.TabIndex = 26;
+            this.nmbMaxLines.Value = new decimal(new int[] {
+            -1530494977,
+            232830,
+            0,
+            0});
             // 
             // panel2
             // 
@@ -307,9 +317,9 @@
             this.grdInactivePlugins.Name = "grdInactivePlugins";
             this.grdInactivePlugins.ReadOnly = true;
             this.grdInactivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Red;
-            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Red;
+            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdInactivePlugins.TabIndex = 1;
@@ -323,9 +333,9 @@
             this.grdActivePlugins.Name = "grdActivePlugins";
             this.grdActivePlugins.ReadOnly = true;
             this.grdActivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdActivePlugins.TabIndex = 0;
@@ -354,16 +364,14 @@
             this.panel1.Size = new System.Drawing.Size(946, 35);
             this.panel1.TabIndex = 33;
             // 
-            // txtSearch
+            // lblSearch
             // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(56, 7);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(203, 20);
-            this.txtSearch.TabIndex = 10;
-            this.txtSearch.Text = "Start typing ...";
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(9, 10);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(41, 13);
+            this.lblSearch.TabIndex = 26;
+            this.lblSearch.Text = "Search";
             // 
             // chkEnableRegExSearch
             // 
@@ -375,14 +383,15 @@
             this.chkEnableRegExSearch.Text = "Enable regular expression search";
             this.chkEnableRegExSearch.UseVisualStyleBackColor = true;
             // 
-            // lblSearch
+            // txtSearch
             // 
-            this.lblSearch.AutoSize = true;
-            this.lblSearch.Location = new System.Drawing.Point(9, 10);
-            this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(41, 13);
-            this.lblSearch.TabIndex = 26;
-            this.lblSearch.Text = "Search";
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(56, 7);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(203, 20);
+            this.txtSearch.TabIndex = 10;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // Tailz
             // 
