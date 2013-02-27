@@ -96,5 +96,11 @@
             string txtSQLQuery = "update plugins set " + "Active = '" + active + "' where pluginName = '" + pluginName + "';";
             this.ExecuteQuery(txtSQLQuery);
         }
+
+        public void Delete(string pluginName)
+        {
+            string txtSQLQuery = "delete from plugins where pluginName = '" + pluginName + "';";
+            this.ExecuteQuery(txtSQLQuery);
+        }
     }
 }

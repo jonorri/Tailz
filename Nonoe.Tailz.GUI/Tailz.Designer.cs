@@ -311,9 +311,9 @@
             // grdInactivePlugins
             // 
             this.grdInactivePlugins.AllowUserToAddRows = false;
-            this.grdInactivePlugins.AllowUserToDeleteRows = false;
             this.grdInactivePlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdInactivePlugins.Location = new System.Drawing.Point(146, 15);
+            this.grdInactivePlugins.MultiSelect = false;
             this.grdInactivePlugins.Name = "grdInactivePlugins";
             this.grdInactivePlugins.ReadOnly = true;
             this.grdInactivePlugins.RowHeadersVisible = false;
@@ -323,13 +323,14 @@
             this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdInactivePlugins.TabIndex = 1;
+            this.grdInactivePlugins.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.grdInactivePlugins_UserDeletingRow);
             // 
             // grdActivePlugins
             // 
             this.grdActivePlugins.AllowUserToAddRows = false;
-            this.grdActivePlugins.AllowUserToDeleteRows = false;
             this.grdActivePlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdActivePlugins.Location = new System.Drawing.Point(8, 15);
+            this.grdActivePlugins.MultiSelect = false;
             this.grdActivePlugins.Name = "grdActivePlugins";
             this.grdActivePlugins.ReadOnly = true;
             this.grdActivePlugins.RowHeadersVisible = false;
@@ -339,6 +340,7 @@
             this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdActivePlugins.TabIndex = 0;
+            this.grdActivePlugins.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.grdActivePlugins_UserDeletingRow);
             // 
             // grdLogs
             // 

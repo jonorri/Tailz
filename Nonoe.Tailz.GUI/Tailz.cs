@@ -335,5 +335,22 @@ namespace Nonoe.Tailz.GUI
                 }
             }
         }
+
+        private void DeletePlugin(string pluginName, bool activity)
+        {
+            this.pluginBusiness.DeletePlugin(pluginName, activity);
+        }
+
+        private void grdInactivePlugins_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            string pluginName = grdInactivePlugins.SelectedRows[0].Cells["PluginName"].Value.ToString();
+            this.DeletePlugin(pluginName, false);
+        }
+
+        private void grdActivePlugins_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            string pluginName = grdActivePlugins.SelectedRows[0].Cells["PluginName"].Value.ToString();
+            this.DeletePlugin(pluginName, true);
+        }
     }
 }

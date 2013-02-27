@@ -1,101 +1,200 @@
-﻿namespace Nonoe.Tailz.Core
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Tail.cs" company="Nonoe">
+//   Copyright JOK 2013
+// </copyright>
+// <summary>
+//   The tail.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Nonoe.Tailz.Core
 {
     using System.IO;
     using System.Text;
 
+    /// <summary>
+    /// The tail.
+    /// </summary>
     public class Tail
     {
-        public string FileName { get; set; }
+        #region Fields
 
-        FileSystemWatcher fileSystemWatcher = null;
-        long previousSeekPosition;
+        /// <summary>
+        /// The file system watcher.
+        /// </summary>
+        private FileSystemWatcher fileSystemWatcher;
 
-        public delegate void MoreDataHandler(object sender, string fileName, string newData);
-        public event MoreDataHandler MoreData;
-
+        /// <summary>
+        /// The max bytes.
+        /// </summary>
         private int maxBytes = 1024 * 16;
-        public int MaxBytes
-        {
-            get { return this.maxBytes; }
-            set { this.maxBytes = value; }
-        }
 
+        /// <summary>
+        /// The previous seek position.
+        /// </summary>
+        private long previousSeekPosition;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Tail"/> class.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
         public Tail(string filename)
         {
             this.FileName = filename;
         }
 
-        public void Start()
+        #endregion
+
+        #region Delegates
+
+        /// <summary>
+        /// The more data handler.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="newData">The new data.</param>
+        public delegate void MoreDataHandler(object sender, string fileName, string newData);
+
+        #endregion
+
+        #region Public Events
+
+        /// <summary>
+        /// The more data.
+        /// </summary>
+        public event MoreDataHandler MoreData;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the file name.
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max bytes.
+        /// </summary>
+        public int MaxBytes
         {
-            FileInfo targetFile = new FileInfo(this.FileName);
-
-            previousSeekPosition = 0;
-
-            fileSystemWatcher = new FileSystemWatcher();
-            fileSystemWatcher.IncludeSubdirectories = false;
-            fileSystemWatcher.Path = targetFile.DirectoryName;
-            fileSystemWatcher.Filter = targetFile.Name;
-
-            if (!targetFile.Exists)
+            get
             {
-                fileSystemWatcher.Created += new FileSystemEventHandler(TargetFile_Created);
-                fileSystemWatcher.EnableRaisingEvents = true;
+                return this.maxBytes;
             }
-            else
+
+            set
             {
-                TargetFile_Changed(null, null);
-                StartMonitoring();
+                this.maxBytes = value;
             }
         }
 
-        public void Stop()
-        {
-            fileSystemWatcher.EnableRaisingEvents = false;
-            fileSystemWatcher.Dispose();
-        }
+        #endregion
 
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// The read full file.
+        /// </summary>
+        /// <returns>The <see cref="string"/>.</returns>
         public string ReadFullFile()
         {
-            using (StreamReader streamReader = new StreamReader(this.FileName))
+            using (var streamReader = new StreamReader(this.FileName))
             {
                 return streamReader.ReadToEnd();
             }
         }
 
+        /// <summary>
+        /// The start.
+        /// </summary>
+        public void Start()
+        {
+            var targetFile = new FileInfo(this.FileName);
+
+            this.previousSeekPosition = 0;
+
+            this.fileSystemWatcher = new FileSystemWatcher();
+            this.fileSystemWatcher.IncludeSubdirectories = false;
+            this.fileSystemWatcher.Path = targetFile.DirectoryName;
+            this.fileSystemWatcher.Filter = targetFile.Name;
+
+            if (!targetFile.Exists)
+            {
+                this.fileSystemWatcher.Created += this.TargetFile_Created;
+                this.fileSystemWatcher.EnableRaisingEvents = true;
+            }
+            else
+            {
+                this.TargetFile_Changed(null, null);
+                this.StartMonitoring();
+            }
+        }
+
+        /// <summary>
+        /// The start monitoring.
+        /// </summary>
         public void StartMonitoring()
         {
-            fileSystemWatcher.Changed += new FileSystemEventHandler(TargetFile_Changed);
-            fileSystemWatcher.EnableRaisingEvents = true;
+            this.fileSystemWatcher.Changed += this.TargetFile_Changed;
+            this.fileSystemWatcher.EnableRaisingEvents = true;
         }
 
-        public void TargetFile_Created(object source, FileSystemEventArgs e)
+        /// <summary>
+        /// The stop.
+        /// </summary>
+        public void Stop()
         {
-            StartMonitoring();
+            this.fileSystemWatcher.EnableRaisingEvents = false;
+            this.fileSystemWatcher.Dispose();
         }
 
+        /// <summary>
+        /// The target file_ changed.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="e">The e.</param>
         public void TargetFile_Changed(object source, FileSystemEventArgs e)
         {
-            //read from current seek position to end of file
-            byte[] bytesRead = new byte[maxBytes];
-            FileStream fs = new FileStream(this.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            if (fs.Length > maxBytes)
+            // read from current seek position to end of file
+            var bytesRead = new byte[this.maxBytes];
+            var fs = new FileStream(this.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            if (fs.Length > this.maxBytes)
             {
-                this.previousSeekPosition = fs.Length - maxBytes;
+                this.previousSeekPosition = fs.Length - this.maxBytes;
             }
 
             this.previousSeekPosition = (int)fs.Seek(this.previousSeekPosition, SeekOrigin.Begin);
-            int numBytes = fs.Read(bytesRead, 0, maxBytes);
+            int numBytes = fs.Read(bytesRead, 0, this.maxBytes);
             fs.Close();
             this.previousSeekPosition += numBytes;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < numBytes; i++)
             {
                 sb.Append((char)bytesRead[i]);
             }
 
-            //call delegates with the string
+            // call delegates with the string
             this.MoreData(this, this.FileName, sb.ToString());
         }
+
+        /// <summary>
+        /// The target file_ created.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="e">The e.</param>
+        public void TargetFile_Created(object source, FileSystemEventArgs e)
+        {
+            this.StartMonitoring();
+        }
+
+        #endregion
     }
 }

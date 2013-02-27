@@ -37,5 +37,10 @@
         {
             this.pluginDal.ChangePluginActivity(pluginName, active);
         }
+
+        public void DeletePlugin(string pluginName, bool activity)
+        {
+            this.pluginDal.Delete(pluginName);
+        }
     }
 }
