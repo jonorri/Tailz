@@ -62,6 +62,13 @@ namespace Nonoe.Tailz.Core
         /// <param name="newData">The new data.</param>
         public delegate void MoreDataHandler(object sender, string fileName, string newData);
 
+        /// <summary>
+        /// Error occured handler
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="errorMessage">The error message</param>
+        public delegate void ErrorOccured(object sender, string errorMessage);
+
         #endregion
 
         #region Public Events
@@ -70,6 +77,11 @@ namespace Nonoe.Tailz.Core
         /// The more data.
         /// </summary>
         public event MoreDataHandler MoreData;
+
+        /// <summary>
+        /// The error event
+        /// </summary>
+        public event ErrorOccured Error;
 
         #endregion
 
@@ -121,20 +133,22 @@ namespace Nonoe.Tailz.Core
 
             this.previousSeekPosition = 0;
 
-            this.fileSystemWatcher = new FileSystemWatcher();
-            this.fileSystemWatcher.IncludeSubdirectories = false;
-            this.fileSystemWatcher.Path = targetFile.DirectoryName;
-            this.fileSystemWatcher.Filter = targetFile.Name;
+            this.fileSystemWatcher = new FileSystemWatcher
+                                         {
+                                             IncludeSubdirectories = false,
+                                             Path = targetFile.DirectoryName,
+                                             Filter = targetFile.Name
+                                         };
 
-            if (!targetFile.Exists)
-            {
-                this.fileSystemWatcher.Created += this.TargetFile_Created;
-                this.fileSystemWatcher.EnableRaisingEvents = true;
-            }
-            else
+            if (targetFile.Exists)
             {
                 this.TargetFile_Changed(null, null);
                 this.StartMonitoring();
+            }
+            else
+            {
+                this.fileSystemWatcher.Created += this.TargetFile_Created;
+                this.fileSystemWatcher.EnableRaisingEvents = true;
             }
         }
 
@@ -189,7 +203,7 @@ namespace Nonoe.Tailz.Core
             }
             catch (Exception ex)
             {
-                this.ErrorOccured(this, this.FileName);
+                this.Error(this, this.FileName);
             }
         }
 

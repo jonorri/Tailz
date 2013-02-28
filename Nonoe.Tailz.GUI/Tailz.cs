@@ -165,6 +165,7 @@ namespace Nonoe.Tailz.GUI
         {
             var tail = new Tail(this.tailFilenameTextbox.Text);
             tail.MoreData += this.myTail_MoreData;
+            tail.Error += this.myTail_Error;
             this.tails.Add(tail);
         }
 
@@ -174,6 +175,16 @@ namespace Nonoe.Tailz.GUI
         private void clearButton_Click(object sender, EventArgs e)
         {
             this.logs.Clear();
+        }
+
+        /// <summary>
+        /// The error handler from the Tail class
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="errorMessage">The error message</param>
+        private void myTail_Error(object sender, string errorMessage)
+        {
+            this.ShowErrorBox(errorMessage);
         }
 
         /// <summary>The more data event handler.</summary>
