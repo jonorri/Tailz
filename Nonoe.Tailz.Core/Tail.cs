@@ -125,7 +125,7 @@ namespace Nonoe.Tailz.Core
         }
 
         /// <summary>
-        /// The start.
+        /// The start method.
         /// </summary>
         public void Start()
         {
