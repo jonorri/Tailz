@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.browseForTailfileButton = new System.Windows.Forms.Button();
             this.tailFilenameTextbox = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
@@ -127,6 +127,7 @@
             // grdTails
             // 
             this.grdTails.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.grdTails.AllowDrop = true;
             this.grdTails.AllowUserToAddRows = false;
             this.grdTails.AllowUserToResizeRows = false;
             this.grdTails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -145,6 +146,8 @@
             this.grdTails.Size = new System.Drawing.Size(359, 113);
             this.grdTails.TabIndex = 19;
             this.grdTails.TabStop = false;
+            this.grdTails.DragDrop += new System.Windows.Forms.DragEventHandler(this.grdTails_DragDrop);
+            this.grdTails.DragEnter += new System.Windows.Forms.DragEventHandler(this.grdTails_DragEnter);
             // 
             // btnAddWatcher
             // 
@@ -317,9 +320,9 @@
             this.grdInactivePlugins.Name = "grdInactivePlugins";
             this.grdInactivePlugins.ReadOnly = true;
             this.grdInactivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Red;
-            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Red;
+            this.grdInactivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.grdInactivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdInactivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdInactivePlugins.TabIndex = 1;
@@ -334,9 +337,9 @@
             this.grdActivePlugins.Name = "grdActivePlugins";
             this.grdActivePlugins.ReadOnly = true;
             this.grdActivePlugins.RowHeadersVisible = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.grdActivePlugins.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.grdActivePlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdActivePlugins.Size = new System.Drawing.Size(99, 124);
             this.grdActivePlugins.TabIndex = 0;

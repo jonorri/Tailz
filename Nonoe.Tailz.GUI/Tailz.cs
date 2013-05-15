@@ -15,6 +15,7 @@ namespace Nonoe.Tailz.GUI
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Drawing;
+    using System.IO;
     using System.Linq;
     using System.Security;
     using System.Text.RegularExpressions;
@@ -163,10 +164,7 @@ namespace Nonoe.Tailz.GUI
         /// <param name="e">The event argument.</param>
         private void btnAddWatcher_Click(object sender, EventArgs e)
         {
-            var tail = new Tail(this.tailFilenameTextbox.Text);
-            tail.MoreData += this.myTail_MoreData;
-            tail.Error += this.myTail_Error;
-            this.tails.Add(tail);
+            this.AddTail(this.tailFilenameTextbox.Text);
         }
 
         /// <summary>The clear button click event handler.</summary>
@@ -388,6 +386,34 @@ namespace Nonoe.Tailz.GUI
         {
             string pluginName = grdActivePlugins.SelectedRows[0].Cells["PluginName"].Value.ToString();
             this.DeletePlugin(pluginName, true);
+        }
+
+        private void AddTail(string fileName)
+        {
+            var tail = new Tail(fileName);
+            tail.MoreData += this.myTail_MoreData;
+            tail.Error += this.myTail_Error;
+            this.tails.Add(tail);
+        }
+
+        private void grdTails_DragDrop(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop);
+
+            // Check if this is a file or directory.
+            if (Path.GetExtension(((string[])(data))[0]) != "")
+            {
+                this.AddTail(((string[])(data))[0]);
+            }
+        }
+
+        private void grdTails_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+
         }
     }
 }
